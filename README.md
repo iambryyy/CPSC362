@@ -1,1 +1,1 @@
-# CPSC362
+# Contact App
