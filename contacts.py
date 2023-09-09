@@ -45,5 +45,4 @@ class contacts:
         con.close()
         
     def delete_contact(self, first_name, last_name, email, address, birthday, phone_number):
-
-    
+        
