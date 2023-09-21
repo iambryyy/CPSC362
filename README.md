@@ -6,3 +6,6 @@ Along with these features, we will also implement a Geolocation feature that wil
 from their area code.
 
 Another feature we will implement will be to send an SMS notification to let other contacts know they have been added to your Contact Book.
+
+Screenshot as of 09/21/23
+![Screenshot (1)](https://github.com/iambryyy/CPSC362/assets/70672555/2b4b4307-f4e4-4f14-b887-0bf2dcaee2bb)
