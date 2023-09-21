@@ -36,6 +36,13 @@ class contacts:
         con.commit()
         con.close()
 
+    def delete_contact(self, first_name, last_name, phone_number):
+        con = sqlite3.connect(self.database_name)
+        cur = con.cursor()
+        cur.execute('''DELETE FROM contacts WHERE phone_number = ?''',(phone_number))
+        con.commit()
+        con.close() 
+
     def modify_contact(self, first_name, last_name, email, address, birthday, phone_number):
         con = sqlite3.connect(self.database_name)
         cur = con.cursor()
@@ -43,6 +50,5 @@ class contacts:
                     (first_name, last_name, email, address, birthday, phone_number))
         con.commit()
         con.close()
-        
-    def delete_contact(self, first_name, last_name, email, address, birthday, phone_number):
-        
+
+    def geoLocationFeature():
