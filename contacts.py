@@ -1,7 +1,7 @@
 import json
 import os
 import sqlite3 
-import location_AreaCode
+import location_AreaCode 
 
 class contacts: 
     def __init__(self):
@@ -56,7 +56,7 @@ class contacts:
         con = sqlite3.connect(self.database_name)
         cur = con.cursor()
         cur.execute()
-
+        
         con.close()
 
     def selectiveContact(self, first_name, last_name, phone_number):
