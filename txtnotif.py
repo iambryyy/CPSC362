@@ -1,4 +1,5 @@
-#Importing Twilio
+# Install 'twilio' in order for the SMS notificaton feature to work: "pip install twilio"
+# Importing Twilio
 from twilio.rest import Client
 
 account_sid = 'AC53136afc84d35948bf29c8cd8c7c9984' # Account SID || DO NOT CHANGE THIS
