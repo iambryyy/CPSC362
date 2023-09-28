@@ -9,7 +9,7 @@ client = Client(account_sid, auth_token)
 message = client.messages.create(
   from_='+18447304514', # DO NOT CHANGE THIS
   body='Hello! You been added to contact book!', # edit body of message 
-  to='+17144958707' # edit this with a phone number to send a text message as a notification
+  to='+17144958707' # edit this with phone number(s) to send a text message as a notification
 )
 
 print(message.sid)
