@@ -60,5 +60,10 @@ delContactButton.place(x=0, y=0)
 modContactButton.place(x=210,y=0)
 addContactButton.place(x=410,y=0)
 
+#the buttons will resize and respond accordingly when resizing the pop window
+delContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+modContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+addContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+
 #launches/runs the window
 window.mainloop()
