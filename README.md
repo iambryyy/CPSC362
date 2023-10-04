@@ -9,3 +9,7 @@ Another feature we will implement will be to send an SMS notification to let oth
 
 Screenshot as of 09/21/23 -- Next will be implementing current Contacts and displaying on the side of pop up window
 ![Screenshot (1)](https://github.com/iambryyy/CPSC362/assets/70672555/2b4b4307-f4e4-4f14-b887-0bf2dcaee2bb)
+
+\
+Screenshot as of 10/03/23 -- The Login/Register page for users to access their Phone contact list
+![image](https://github.com/iambryyy/CPSC362/assets/107425268/9f4603d4-1557-420a-beed-ee9ff0762b2b)
