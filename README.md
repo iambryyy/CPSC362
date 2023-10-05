@@ -13,3 +13,6 @@ Screenshot as of 09/21/23 -- Next will be implementing current Contacts and disp
 \
 Screenshot as of 10/03/23 -- The Login/Register page for users to access their Phone contact list
 ![image](https://github.com/iambryyy/CPSC362/assets/107425268/9f4603d4-1557-420a-beed-ee9ff0762b2b)
+
+Screenshot as of 10/05/23 -- Basic SMS notification of user being added to a person's contact book using Twilio API
+![F9907FBC-4FB6-4876-BCFC-CFC5DACCA0DA](https://github.com/iambryyy/CPSC362/assets/70248924/5fe6f914-eaa5-4a38-bb24-83bff5fe850f)
