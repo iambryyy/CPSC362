@@ -1,4 +1,5 @@
 # Install 'twilio' in order for the SMS notificaton feature to work: "pip install twilio"
+# * If you experience an error installing Twilio, visit this link and follow the steps in the video "https://www.youtube.com/watch?v=XFqaXaj8mm8"
 # Importing Twilio
 from twilio.rest import Client
 
@@ -9,7 +10,7 @@ client = Client(account_sid, auth_token)
 message = client.messages.create(
   from_='+18447304514', # DO NOT CHANGE THIS
   body='Hello! You been added to contact book!', # edit body of message 
-  to='+17144958707' # edit this with phone number(s) to send a text message as a notification
+  to='+17148534531' # edit this with phone number(s) to send a text message as a notification
 )
 
 print(message.sid)
