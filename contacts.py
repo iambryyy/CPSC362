@@ -1,11 +1,11 @@
-import json
 import os
 import sqlite3 
-import location_AreaCode 
 
-class contacts: 
-    def __init__(self):
-        self.database_name = "" 
+class Contacts: 
+    def __init__(self, user_email):
+        self.user_email = user_email
+        self.database_name = f"{user_email}_contacts.db"
+
     def set_database_name(self, database_name):
         self.database_name = database_name
         
@@ -36,31 +36,39 @@ class contacts:
                     (first_name, last_name, email, address, birthday, phone_number))
         con.commit()
         con.close()
-
-    def delete_contact(self, first_name, last_name, phone_number):
+    
+    def modify_contact(self, contact_id, first_name, last_name, email, address, birthday, phone_number):
         con = sqlite3.connect(self.database_name)
         cur = con.cursor()
-        cur.execute('''DELETE FROM contacts WHERE phone_number = ?''',(phone_number))
+
+        fields = [f"first_name = '{first_name}'",
+                  f"last_name = '{last_name}'",
+                  f"email = '{email}'",
+                  f"address = '{address}'",
+                  f"birthday = '{birthday}'",
+                  f"phone_number = '{phone_number}'"]
+
+        update_str = ', '.join([field for field in fields if field.split('=')[1].strip() != "None"])
+
+        cur.execute(f'''UPDATE contacts SET {update_str} WHERE contact_id = ?''', (contact_id))
+        con.commit()
+        con.close()
+    
+    def get_contact(self):
+        con = sqlite3.connect(self.database_name)
+        cur = con.cursor()
+        cur.execute('''SELECT * FROM contacts''')
+        all_contacts = cur.fetchall()
+        con.close()
+        return all_contacts
+
+    def delete_contact(self, contact_id):
+        con = sqlite3.connect(self.database_name)
+        cur = con.cursor()
+        cur.execute('''DELETE FROM contacts WHERE phone_number = ?''',(contact_id))
         con.commit()
         con.close() 
+    
+   
 
-    def modify_contact(self, first_name, last_name, email, address, birthday, phone_number):
-        con = sqlite3.connect(self.database_name)
-        cur = con.cursor()
-        cur.execute('''UPDATE contacts SET first_name = ?, last_name = ?, email = ?, address = ?, birthday = ? phone_number = ? WHERE phone_number = ?''',
-                    (first_name, last_name, email, address, birthday, phone_number))
-        con.commit()
-        con.close()
 
-    def geoLocationFeature(self, phone_number):
-        con = sqlite3.connect(self.database_name)
-        cur = con.cursor()
-        cur.execute()
-        
-        con.close()
-
-    def selectiveContact(self, first_name, last_name, phone_number):
-        con = sqlite3.connect(self.database_name)
-        cur = con.cursor()
-
-        con.close()

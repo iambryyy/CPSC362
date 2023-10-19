@@ -1,69 +1,146 @@
-#import sys
-#import contacts.py
 import tkinter as tk
+from tkinter import simpledialog, messagebox
+from contacts import Contacts
 
+window = None
 
-#title opening page when launched goes right
-window = tk.Tk()
+def launch_contact_book(contact_db_instance):
+    global window, contact_db
+    
+    #Placeholder where it will get the info from advancedLogging.py
+    contact_db = contact_db_instance
 
-window.title('Contact Book')
+    #title opening page when launched goes right
+    window = tk.Tk()
 
-label = tk.Label(
-window,
-text = "Welcome",
-background = "white",
-foreground = "black",
-width = 2000,
-height = 2000
-)
+    window.title('Contact Book')
 
-#buttons for functions will be going here
-addContactButton = tk.Button(
+    label = tk.Label(
     window,
-    text = "Add Contact",
-    width = 30,
-    height = 20,
-    background = "blue",
-    foreground = "black"    
-)
+    text = "Welcome",
+    background = "white",
+    foreground = "black",
+    width = 2000,
+    height = 2000
+    )
 
-#button for delCont
-delContactButton = tk.Button(
-    window,
-    text = "Delete Contact",
-    width = 30,
-    height = 20,
-    background = "red",
-    foreground = "black"    
-)
+    ##Actions for the command action when the button is pressed##
+    #Action Function to add contact in the pop window
+    def open_add_contact_window():
+        add_window = tk.Toplevel(window)
+        add_window.title("Add Contact")
 
-#button for modCont
-modContactButton = tk.Button(
-    window,
-    text = "Modify Contact",
-    width = 30,
-    height = 20,
-    background = "yellow",
-    foreground = "black"
-)
+        labels = ["First Name", "Last Name", "Email", "Address", "Birthday", "Phone Number"]
+        entries = []
 
-#separator for contact list that will appear on the right hand side
-#window.add_separator()
-#TSeparator = tk.SEPARATOR(window)
-#TSeparator.config(orient = 'vertical')
-#TSeparator.place(relx=.5, rely=0, relwidth=1, relheight=1)
-#separator = tk.SEPARATOR(window, orient='vertical').pack(fill = Y, expand = TRUE)
-#separator.place(relx=.5, rely=0, relwidth=1, relheight = 1)
+        for index, label_text in enumerate(labels):
+            label = tk.Label(add_window, text=label_text)
+            label.grid(row=index, column=0)
+            entry = tk.Entry(add_window)
+            entry.grid(row=index, column=1)
+            entries.append(entry)
+    
+        def save_contact():
+            details = [entry.get() for entry in entries]
+            contact_db.add_contact(*details)
+            messagebox.showinfo("Success", "Contact added successfully!")
+            add_window.destroy()
+    
+        add_button = tk.Button(add_window, text="Add", command=save_contact)
+        add_button.grid(row=len(labels), column = 1)   
 
-#placements for the buttons to make them look more uniform
-delContactButton.place(x=0, y=0)
-modContactButton.place(x=210,y=0)
-addContactButton.place(x=410,y=0)
+    #Action Function to delete contact in the pop window 
+    def open_delete_contact_window():
+        del_window = tk.Toplevel(window)
+        del_window.title("Delete Contact")
 
-#the buttons will resize and respond accordingly when resizing the pop window
-delContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
-modContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
-addContactButton.pack(fill=tk.BOTH,side=tk.LEFT, expand=True)
+        labels = ["First Name", "Last Name", "Phone Number"]
+        entries = []
 
-#launches/runs the window
-window.mainloop()
+        for index, label_text in enumerate(labels):
+            label = tk.Label(del_window, text=label_text)
+            label.grid(row=index, column=0)
+            entry = tk.Entry(del_window)
+            entry.grid(row=index, column=1)
+            entries.append(entry)
+    
+        def confirm_delete():
+            first_name, last_name, phone_number = [entry.get() for entry in entries]
+            contact_db.delete_contact(first_name, last_name, phone_number)
+            messagebox.showinfo("Success", "Contact deleted successfully!")
+            del_window.destroy()
+    
+        del_btn = tk.Button(del_window, text="Delete", command=confirm_delete)
+        del_btn.grid(row=len(labels), column=1)
+
+    def open_modify_contact_window():
+        mod_window = tk.Toplevel(window)
+        mod_window.title("Modify Contacts")
+
+        labels = ["First Name", "Last Name", "Phone Number"]
+        entries = []
+
+        for index, label_text in enumerate(labels):
+            label = tk.Label(mod_window, text=f"Current {label_text}")
+            label.grid(row=index, column=0)
+            entry = tk.Entry(mod_window)
+            entry.grid(row=index, column=1)
+            entries.append(entry)
+
+        new_labels = ["New First Name", "New Last Name", "New Email", "New Address", "New Birthday", "New Phone Number"]
+        new_entries = []
+    
+        def save_changes():
+            first_name, last_name, phone_number = [entry.get() for entry in entries]
+            details = [entry.get() for entry in new_entries]
+            contact_db.modify_contact(first_name, last_name, phone_number, *details)
+            messagebox.showinfo("Success!", "Contact has been modified successfully!")
+            mod_window.destroy()
+    
+        mod_btn = tk.Button(mod_window, text="Modify", command=save_changes)
+        mod_btn.grid(row=len(new_labels), column=3)
+
+    #button for addCont
+    addContactButton = tk.Button(
+        window,
+        text = "Add Contact",
+        width = 30,
+        height = 20,
+        background = "blue",
+        foreground = "black"    
+    )
+
+    #button for delCont
+    delContactButton = tk.Button(
+        window,
+        text = "Delete Contact",
+        width = 30,
+        height = 20,
+        background = "red",
+        foreground = "black"    
+    )
+
+    #button for modCont
+    modContactButton = tk.Button(
+        window,
+        text = "Modify Contact",
+        width = 30,
+        height = 20,
+        background = "yellow",
+        foreground = "black"
+    )
+
+    #placements for the buttons to make them look more uniform
+    delContactButton.place(x=0, y=0)
+    modContactButton.place(x=0,y=210)
+    addContactButton.place(x=0,y=410)
+
+    #command actions when the button is clicked 
+    addContactButton.config(command=open_add_contact_window)
+    modContactButton.config(command=open_modify_contact_window)
+    delContactButton.config(command=open_delete_contact_window)
+
+    window.mainloop()
+
+if __name__ == '__main__':
+    launch_contact_book()
