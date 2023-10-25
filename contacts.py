@@ -2,7 +2,7 @@ import os
 import sqlite3 
 
 class Contacts: 
-    def __init__(self, user_email):
+    def __init__(self, user_email = None):  #None was included so that program could run even without email
         self.user_email = user_email
         self.database_name = f"{user_email}_contacts.db"
 
@@ -27,7 +27,7 @@ class Contacts:
             con.close()
             
     def get_database_name(self):
-        return self.get_database_name 
+        return self.database_name 
     
     def add_contact(self, first_name, last_name, email, address, birthday, phone_number):
         con = sqlite3.connect(self.database_name)

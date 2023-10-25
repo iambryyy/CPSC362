@@ -20,8 +20,8 @@ def launch_contact_book(contact_db_instance):
     text = "Welcome",
     background = "white",
     foreground = "black",
-    width = 2000,
-    height = 2000
+    width = 1920,
+    height = 1080
     )
 
     ##Actions for the command action when the button is pressed##
@@ -105,7 +105,7 @@ def launch_contact_book(contact_db_instance):
         window,
         text = "Add Contact",
         width = 30,
-        height = 20,
+        height = 15,
         background = "blue",
         foreground = "black"    
     )
@@ -115,7 +115,7 @@ def launch_contact_book(contact_db_instance):
         window,
         text = "Delete Contact",
         width = 30,
-        height = 20,
+        height = 15,
         background = "red",
         foreground = "black"    
     )
@@ -125,15 +125,32 @@ def launch_contact_book(contact_db_instance):
         window,
         text = "Modify Contact",
         width = 30,
-        height = 20,
+        height = 15,
         background = "yellow",
         foreground = "black"
     )
 
+    ''''contacts_label = tk.Label(window, text="CURRENT CONTACTS")
+    contacts_label.grid(row=0, column=0, columnspan=2)
+
+    contact_list=tk.Listbox(window)
+    contact_list.grid(row=1, column=1, columnspan=2, sticky=tk.NSEW)
+
+    window.grid_rowconfigure(1, weight=1)
+    window.grid_columnconfigure(0,weight=1)
+    '''''
+    
+   # right side where contacts will be displayed  LAST UPDATE HERE
+    contacts_label = tk.Label(window, text="CURRENT CONTACTS")
+    contacts_label.grid(row=0,column=1,sticky=tk.NW)
+    contact_list = tk.Listbox(window)
+    contact_list.grid(row=1, column=1, columnspan=5, sticky=tk.NSEW)
+    
+
     #placements for the buttons to make them look more uniform
-    delContactButton.place(x=0, y=0)
-    modContactButton.place(x=0,y=210)
-    addContactButton.place(x=0,y=410)
+    delContactButton.grid(row=0, column=0, sticky="w")
+    modContactButton.grid(row=1, column=0, sticky="w")
+    addContactButton.grid(row=2, column=0, sticky="w")
 
     #command actions when the button is clicked 
     addContactButton.config(command=open_add_contact_window)
@@ -143,4 +160,7 @@ def launch_contact_book(contact_db_instance):
     window.mainloop()
 
 if __name__ == '__main__':
-    launch_contact_book()
+    contact_db = Contacts()
+    launch_contact_book(contact_db)
+
+    
