@@ -1,7 +1,5 @@
 from tkinter import *
 from tkinter import messagebox
-from popwindow import launch_contact_book
-from contacts import Contacts
 import sqlite3
 
 '''Creating the Database for the accounts created using the imports of sqlite3'''
@@ -28,57 +26,69 @@ ws.config(bg = '#0B5A81')
 
 '''Function Registering an Account for your contact book'''
 def insert_record():
+    #Validations 
+    check_counter = 0
+    warn = ''
 
-    # Gather all inputs
-    name = register_name.get()
-    email = register_email.get()
-    contact = register_mobile.get()
-    gender = var.get()
-    country = variable.get()
-    pwd = register_pwd.get()
-    pwd_reenter = pwd_again.get()
+    if register_name.get() == "":
+        warn = "Name can't be empty"
+    else:
+        check_counter += 1
+    
+    if register_email.get() == "":
+        warn = "Email can't be empty"
+    else:
+        check_counter += 1
+    
+    if register_mobile.get() == "":
+        warn = "Contact can't be empty"
+    else:
+        check_counter += 1
 
-    # Check each input and store associated error messages
-    errors = []
-    if not name:
-        errors.append("Name can't be empty")
-    if not email:
-        errors.append("Email can't be empty")
-    if not contact:
-        errors.append("Contact can't be empty")
-    if not gender:
-        errors.append("Select Gender")
-    if not country:
-        errors.append("Select Country")
-    if not pwd:
-        errors.append("Password can't be empty")
-    if pwd != pwd_reenter:
-        errors.append("Passwords didn't match")
+    if var.get() == "":
+        warn = "Select Gender"
+    else:
+        check_counter += 1
+    
+    if variable.get() == "":
+        warn = "Select Country"
+    else:
+        check_counter += 1
+    
+    if register_pwd.get() == "":
+        warn = "Password can't be empty"
+    else:
+        check_counter += 1
+    
+    if pwd_again.get() == "":
+        warn = "Re-enter password can't be empty"
+    else:
+        check_counter += 1
 
-    # If there are errors, show the first error from the list
-    if errors:
-        messagebox.showerror("Error", errors[0])
-        return
-
-    # If there are no errors, proceed with database insertion
-    try:
-        con = sqlite3.connect('userdata.db')
-        cur = con.cursor()
-        cur.execute("INSERT INTO record VALUES (:name, :email, :contact, :gender, :country, :password)",
-                    {
-                        'name': name,
-                        'email': email,
-                        'contact': contact,
-                        'gender': gender,
-                        'country': country,
-                        'password': pwd
-                    })
-        con.commit()
-        messagebox.showinfo('confirmation','Record Saved')
-        user_contacts = Contacts(email)
-        launch_contact_book(user_contacts)
-    except Exception as ep:
-        messagebox.showerror('', ep)
+    if pwd_again.get() != pwd_again.get():
+        warn = "Passwords didn't match"
+    else:
+        check_counter += 1
+    
+    if check_counter == 8:
+        try:
+            con = sqlite3.connect('userdata.db')
+            cur = con.cursor()
+            cur.execute("INSERT INTO record VALUES (:name, :email, :contact, :gender, :country, :password)",
+                        {
+                            'name':register_name.get(),
+                            'email':register_email.get(),
+                            'contact':register_mobile.get(),
+                            'gender':var.get(),
+                            'country':variable.get(),
+                            'password':register_pwd.get()
+                        })
+            con.commit()
+            messagebox.showinfo('confirmation','Recoved Saved')
+        except Exception as ep:
+            messagebox.showerror('',ep)
+        else:
+            messagebox.showerror('Error',warn) 
 
 '''Fuction for the Login in sequence'''
 def login_response():
@@ -109,15 +119,6 @@ def login_response():
     if check_counter == 2:
         if(uname == username and upwd == pwd):
             messagebox.showinfo('Login Status', 'Logged in Successfully!')
-            
-            #Close the current window
-            ws.destroy()   
-
-            #Launch the main GUI
-            launch_contact_book()
-
-            #Initiate the main contact book GUI
-            #window.mainloop()
         else:
             messagebox.showerror('Login Status', 'Invalid username or password')
     else:
@@ -322,7 +323,7 @@ register_btn = Button(
     font = f,
     relief = SOLID,
     cursor = 'hand2',
-    command = insert_record
+    command = NONE
 )
 
 ##### LEFT_FRAME WIDGETS ######
