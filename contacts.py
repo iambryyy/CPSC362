@@ -3,19 +3,17 @@ import sqlite3
 
 class Contacts: 
     def __init__(self, user_email = None):  #None was included so that program could run even without email
-        self.user_email = user_email
+        self.user_email = user_email #Email must be used to distinguish unique-ness in case contacts have same first/last name
         self.database_name = f"{user_email}_contacts.db"
-
-    def set_database_name(self, database_name):
-        self.database_name = database_name
+        self.create_contacts_table()
         
-        if os.path.exists(self.database_name):
-            return
-        else:
+    
+
+    def create_contacts_table(self):
             con = sqlite3.connect(self.database_name)
             cur = con.cursor()
-
-            cur.execute(''' CREATE TABLE IF NOT EXISTS contacts (contact_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+            cur.execute(''' CREATE TABLE IF NOT EXISTS contacts 
+                        (contact_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
                         first_name TEXT NOT NULL, 
                         last_name TEXT NOT NULL,
                         email TEXT NOT NULL,
@@ -36,6 +34,11 @@ class Contacts:
                     (first_name, last_name, email, address, birthday, phone_number))
         con.commit()
         con.close()
+        
+    def add_contact_listbox(self, contact_list):  #This allows contacts from add_contact function to actually populate the screen 
+        contacts = self.get_contact()
+        for contact in contacts:
+            contact_list.insert(0, f"{contact[1]} {contact[2]} - {contact[5]}")
     
     def modify_contact(self, contact_id, first_name, last_name, email, address, birthday, phone_number):
         con = sqlite3.connect(self.database_name)
