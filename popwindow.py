@@ -45,20 +45,21 @@ def launch_contact_book(contact_db_instance):
             contact_db.add_contact(*details)
             messagebox.showinfo("Success", "Contact added successfully!")  
             add_window.destroy()
-            contact_db.add_contact_listbox(contact_list) #This makes added contact appear in listbox
+            contact_db.add_contact_listbox(contact_list, contact_db.get_contact()) #This makes added contact appear in listbox
     
         add_button = tk.Button(add_window, text="Add", command=save_contact)
         add_button.grid(row=len(labels), column = 1)   
         
-        def add_contact_listbox(self,contact_list):
+        def add_contact_listbox(self):
+            contact_list.delete(0, tk.END)   #this should clear listbox of duplicates
             contacts = self.get_contact()
             for contact in contacts:
-                contact_list.insert(tk.END, f"{contact[1]} {contact[2]} - {contact[5]}")
+                contact_list.insert(tk.END, f"{contact[1]} {contact[2]} - {contact[6]}")  
 
     #Action Function to delete contact in the pop window 
     def open_delete_contact_window():
         del_window = tk.Toplevel(window)
-        del_window.title("Delete Contact")
+        del_window.title("Delete Contact")  
 
         labels = ["First Name", "Last Name", "Phone Number"]
         entries = []
@@ -73,11 +74,18 @@ def launch_contact_book(contact_db_instance):
         def confirm_delete():
             first_name, last_name, phone_number = [entry.get() for entry in entries]
             contact_db.delete_contact(first_name, last_name, phone_number)
+            updated_contacts = contact_db.get_contact()      #updates current contacts 
+            contact_db.add_contact_listbox(contact_list, updated_contacts)  #this will refresh listbox with new current contacts
             messagebox.showinfo("Success", "Contact deleted successfully!")
             del_window.destroy()
     
         del_btn = tk.Button(del_window, text="Delete", command=confirm_delete)
         del_btn.grid(row=len(labels), column=1)
+        
+        #array for Contact info 
+        entry_first_name = entries[0]
+        entry_last_name = entries[1]
+        entry_phone_number = entries[2]
 
     def open_modify_contact_window():
         mod_window = tk.Toplevel(window)
