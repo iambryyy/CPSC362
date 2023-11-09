@@ -40,19 +40,26 @@ def launch_contact_book(contact_db_instance):
             entry.grid(row=index, column=1)
             entries.append(entry)
     
-        def save_contact():
+        def save_contact():   #Will execute once 'add_contact' gets fulfilled successfully
             details = [entry.get() for entry in entries]
             contact_db.add_contact(*details)
-            messagebox.showinfo("Success", "Contact added successfully!")
+            messagebox.showinfo("Success", "Contact added successfully!")  
             add_window.destroy()
+            contact_db.add_contact_listbox(contact_list, contact_db.get_contact()) #This makes added contact appear in listbox
     
         add_button = tk.Button(add_window, text="Add", command=save_contact)
         add_button.grid(row=len(labels), column = 1)   
+        
+        def add_contact_listbox(self):
+            contact_list.delete(0, tk.END)   #this should clear listbox of duplicates
+            contacts = self.get_contact()
+            for contact in contacts:
+                contact_list.insert(tk.END, f"{contact[1]} {contact[2]} - {contact[6]}")  
 
     #Action Function to delete contact in the pop window 
     def open_delete_contact_window():
         del_window = tk.Toplevel(window)
-        del_window.title("Delete Contact")
+        del_window.title("Delete Contact")  
 
         labels = ["First Name", "Last Name", "Phone Number"]
         entries = []
@@ -67,11 +74,18 @@ def launch_contact_book(contact_db_instance):
         def confirm_delete():
             first_name, last_name, phone_number = [entry.get() for entry in entries]
             contact_db.delete_contact(first_name, last_name, phone_number)
+            updated_contacts = contact_db.get_contact()      #updates current contacts 
+            contact_db.add_contact_listbox(contact_list, updated_contacts)  #this will refresh listbox with new current contacts
             messagebox.showinfo("Success", "Contact deleted successfully!")
             del_window.destroy()
     
         del_btn = tk.Button(del_window, text="Delete", command=confirm_delete)
         del_btn.grid(row=len(labels), column=1)
+        
+        #array for Contact info 
+        entry_first_name = entries[0]
+        entry_last_name = entries[1]
+        entry_phone_number = entries[2]
 
     def open_modify_contact_window():
         mod_window = tk.Toplevel(window)
@@ -104,30 +118,33 @@ def launch_contact_book(contact_db_instance):
     addContactButton = tk.Button(
         window,
         text = "Add Contact",
+        font=("Arial", 10, "bold"),
         width = 30,
-        height = 15,
-        background = "blue",
-        foreground = "black"    
+        height = 22,
+        background = "navy blue",
+        foreground = "white"    
     )
 
     #button for delCont
     delContactButton = tk.Button(
         window,
         text = "Delete Contact",
+        font=("Arial", 10, "bold"),
         width = 30,
-        height = 15,
-        background = "red",
-        foreground = "black"    
+        height = 22,
+        background = "forest green",
+        foreground = "white"    
     )
 
     #button for modCont
     modContactButton = tk.Button(
         window,
         text = "Modify Contact",
+        font=("Arial", 10, "bold"),
         width = 30,
-        height = 15,
-        background = "yellow",
-        foreground = "black"
+        height = 25,
+        background = "chocolate",
+        foreground = "white"
     )
 
     ''''contacts_label = tk.Label(window, text="CURRENT CONTACTS")
@@ -141,11 +158,18 @@ def launch_contact_book(contact_db_instance):
     '''''
     
    # right side where contacts will be displayed  LAST UPDATE HERE
-    contacts_label = tk.Label(window, text="CURRENT CONTACTS")
-    contacts_label.grid(row=0,column=1,sticky=tk.NW)
-    contact_list = tk.Listbox(window)
-    contact_list.grid(row=1, column=1, columnspan=5, sticky=tk.NSEW)
+    contacts_label = tk.Label(
+        window, 
+        text="CURRENT CONTACTS HERE",
+        anchor = "n",
+        font=("Arial", 28, "bold")
+              )
     
+    contacts_label.grid(row=0,column=1,sticky=tk.NW)
+    contact_list = tk.Listbox(window)  #The actual textbox
+    contact_list.grid(row=1, column=1, columnspan=5, sticky=tk.NSEW)
+    window.grid_columnconfigure(1, weight = 1)  #this expands the column for 'listbox' horizontally
+    window.grid_rowconfigure(1, weight = 1)
 
     #placements for the buttons to make them look more uniform
     delContactButton.grid(row=0, column=0, sticky="w")
