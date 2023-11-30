@@ -59,6 +59,18 @@ def insert_record():
     if errors:
         messagebox.showerror("Error", errors[0])
         return
+    
+    #If there are no errors, check for email addresses uniquness
+    try:
+        con = sqlite3.connect('userdata.db')
+        cur = con.cursor()
+        cur.execute("SELECT * FROM  record WHERE email = ?", (email,))
+        if cur.fetchone() is not None:
+            messagebox.showerror('Error', 'This email is already registerd.')
+            return 
+    except Exception as ep:
+        messagebox.showerror('',ep)
+        return
 
     # If there are no errors, proceed with database insertion
     try:
@@ -75,10 +87,10 @@ def insert_record():
                     })
         con.commit()
         messagebox.showinfo('confirmation','Record Saved')
-        user_contacts = Contacts(email)
-        launch_contact_book(user_contacts)
     except Exception as ep:
         messagebox.showerror('', ep)
+    finally:
+        con.close()  #Ensures that the connection is closed whether there is an error or not 
 
 '''Fuction for the Login in sequence'''
 def login_response():
@@ -110,14 +122,17 @@ def login_response():
         if(uname == username and upwd == pwd):
             messagebox.showinfo('Login Status', 'Logged in Successfully!')
             
-            #Close the current window
-            ws.destroy()   
-
+            user_contacts = Contacts(uname)
+           
             #Launch the main GUI
-            launch_contact_book()
+            launch_contact_book(user_contacts)
+            
+            ##################
+            #Keep This Here for Now Until Logout function is installed
+            ###################
+            #Close the current window
+            #ws.destroy()   
 
-            #Initiate the main contact book GUI
-            #window.mainloop()
         else:
             messagebox.showerror('Login Status', 'Invalid username or password')
     else:
@@ -348,4 +363,3 @@ others_rb.pack(expand = True, side = LEFT)
 
 #Infinite Loop
 ws.mainloop()
-
