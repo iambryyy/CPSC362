@@ -85,13 +85,17 @@ def launch_contact_book(contact_db_instance):
         #array for Contact info 
         entry_first_name = entries[0]
         entry_last_name = entries[1]
-        entry_phone_number = entries[2]
+        entry_email = entries[2]
+        entry_address = entries[3]
+        entry_birthday = entries[4]
+        entry_phone_number = entries[5]
+        
 
     def open_modify_contact_window():
         mod_window = tk.Toplevel(window)
         mod_window.title("Modify Contacts")
 
-        labels = ["First Name", "Last Name", "Phone Number"]
+        labels = ["First Name", "Last Name", "Email", "Address", "Birthday", "Phone Number"]
         entries = []
 
         for index, label_text in enumerate(labels):
@@ -105,9 +109,9 @@ def launch_contact_book(contact_db_instance):
         new_entries = []
     
         def save_changes():
-            first_name, last_name, phone_number = [entry.get() for entry in entries]
+            first_name, last_name, email, address, birthday, phone_number = [entry.get() for entry in entries]
             details = [entry.get() for entry in new_entries]
-            contact_db.modify_contact(first_name, last_name, phone_number, *details)
+            contact_db.modify_contact(first_name, last_name, email, address, birthday, phone_number, *details)
             messagebox.showinfo("Success!", "Contact has been modified successfully!")
             mod_window.destroy()
     
@@ -120,7 +124,7 @@ def launch_contact_book(contact_db_instance):
         text = "Add Contact",
         font=("Arial", 10, "bold"),
         width = 30,
-        height = 22,
+        height = 30,
         background = "navy blue",
         foreground = "white"    
     )
@@ -131,21 +135,14 @@ def launch_contact_book(contact_db_instance):
         text = "Delete Contact",
         font=("Arial", 10, "bold"),
         width = 30,
-        height = 22,
+        height = 30,
         background = "forest green",
-        foreground = "white"    
+        foreground = "white" 
+    
     )
-
-    #button for modCont
-    modContactButton = tk.Button(
-        window,
-        text = "Modify Contact",
-        font=("Arial", 10, "bold"),
-        width = 30,
-        height = 25,
-        background = "chocolate",
-        foreground = "white"
-    )
+    
+    
+    
 
     ''''contacts_label = tk.Label(window, text="CURRENT CONTACTS")
     contacts_label.grid(row=0, column=0, columnspan=2)
@@ -160,9 +157,9 @@ def launch_contact_book(contact_db_instance):
    # right side where contacts will be displayed  LAST UPDATE HERE
     contacts_label = tk.Label(
         window, 
-        text="CURRENT CONTACTS HERE",
+        text="                CURRENT CONTACTS HERE",
         anchor = "n",
-        font=("Arial", 28, "bold")
+        font=("Arial", 45, "bold")
               )
     
     contacts_label.grid(row=0,column=1,sticky=tk.NW)
@@ -173,12 +170,10 @@ def launch_contact_book(contact_db_instance):
 
     #placements for the buttons to make them look more uniform
     delContactButton.grid(row=0, column=0, sticky="w")
-    modContactButton.grid(row=1, column=0, sticky="w")
-    addContactButton.grid(row=2, column=0, sticky="w")
+    addContactButton.grid(row=1, column=0, sticky="w")
 
     #command actions when the button is clicked 
     addContactButton.config(command=open_add_contact_window)
-    modContactButton.config(command=open_modify_contact_window)
     delContactButton.config(command=open_delete_contact_window)
 
     window.mainloop()
