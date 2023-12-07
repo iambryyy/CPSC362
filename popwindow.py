@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from contacts import Contacts
+from desktopnotif import *
 
 window = None
 
@@ -43,7 +44,7 @@ def launch_contact_book(contact_db_instance):
         def save_contact():   #Will execute once 'add_contact' gets fulfilled successfully
             details = [entry.get() for entry in entries]
             contact_db.add_contact(*details)
-            messagebox.showinfo("Success", "Contact added successfully!")  
+            messagebox.showinfo("Success", "Contact added successfully!") 
             add_window.destroy()
             contact_db.add_contact_listbox(contact_list, contact_db.get_contact()) #This makes added contact appear in listbox
     
