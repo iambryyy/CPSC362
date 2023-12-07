@@ -1,12 +1,15 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from contacts import Contacts
+from tkinter import *
 from desktopnotif import *
 
 window = None
+contact_db = None 
+contact_list = None 
 
 def launch_contact_book(contact_db_instance):
-    global window, contact_db
+    global window, contact_db, contact_list
     
     #Placeholder where it will get the info from advancedLogging.py
     contact_db = contact_db_instance
@@ -119,6 +122,8 @@ def launch_contact_book(contact_db_instance):
         mod_btn = tk.Button(mod_window, text="Modify", command=save_changes)
         mod_btn.grid(row=len(new_labels), column=3)
 
+            
+
     #button for addCont
     addContactButton = tk.Button(
         window,
@@ -143,8 +148,6 @@ def launch_contact_book(contact_db_instance):
     )
     
     
-    
-
     ''''contacts_label = tk.Label(window, text="CURRENT CONTACTS")
     contacts_label.grid(row=0, column=0, columnspan=2)
 
@@ -168,6 +171,8 @@ def launch_contact_book(contact_db_instance):
     contact_list.grid(row=1, column=1, columnspan=5, sticky=tk.NSEW)
     window.grid_columnconfigure(1, weight = 1)  #this expands the column for 'listbox' horizontally
     window.grid_rowconfigure(1, weight = 1)
+
+    
 
     #placements for the buttons to make them look more uniform
     delContactButton.grid(row=0, column=0, sticky="w")

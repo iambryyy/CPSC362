@@ -25,9 +25,6 @@ Region = geocoder.description_for_number(phoneNumber, 'en')
 valid = phonenumbers.is_valid_number(phoneNumber)
 possible = phonenumbers.is_possible_number(phoneNumber)
 
-### Area code location of PhoneNumber 
-country = pycountry.countries.get(alpha_2 = region_code_for_number(phoneNumber)) 
-print(country.name)
 
 #print(phoneNumber)
 #print(timeZone)
